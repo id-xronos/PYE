@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { login, logout, getCurrentUser } from './auth.service';
 
 const mockUser = {
@@ -7,9 +8,9 @@ const mockUser = {
   token: 'mock-token',
 };
 
-global.fetch = jest.fn();
+globalThis.fetch = jest.fn() as typeof fetch;
 
-const mockFetch = global.fetch as jest.Mock;
+const mockFetch = jest.mocked(globalThis.fetch);
 
 beforeEach(() => {
   mockFetch.mockReset();
@@ -18,10 +19,7 @@ beforeEach(() => {
 describe('auth.service', () => {
   describe('login', () => {
     it('returns the user on successful login', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockUser,
-      });
+      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => mockUser } as unknown as Response);
 
       const result = await login({ email: 'test@example.com', password: 'password' });
 
@@ -32,10 +30,7 @@ describe('auth.service', () => {
     });
 
     it('throws an error on failed login', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        json: async () => ({ message: 'Invalid credentials' }),
-      });
+      mockFetch.mockResolvedValueOnce({ ok: false, json: async () => ({ message: 'Invalid credentials' }) } as unknown as Response);
 
       await expect(login({ email: 'bad@example.com', password: 'wrong' }))
         .rejects.toThrow('Invalid credentials');
@@ -44,7 +39,7 @@ describe('auth.service', () => {
 
   describe('logout', () => {
     it('calls the logout endpoint', async () => {
-      mockFetch.mockResolvedValueOnce({ ok: true });
+      mockFetch.mockResolvedValueOnce({ ok: true } as unknown as Response);
 
       await logout();
 
@@ -54,17 +49,14 @@ describe('auth.service', () => {
 
   describe('getCurrentUser', () => {
     it('returns the current user when authenticated', async () => {
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockUser,
-      });
+      mockFetch.mockResolvedValueOnce({ ok: true, json: async () => mockUser } as unknown as Response);
 
       const result = await getCurrentUser();
       expect(result).toEqual(mockUser);
     });
 
     it('returns null when not authenticated', async () => {
-      mockFetch.mockResolvedValueOnce({ ok: false });
+      mockFetch.mockResolvedValueOnce({ ok: false } as unknown as Response);
 
       const result = await getCurrentUser();
       expect(result).toBeNull();
