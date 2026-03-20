@@ -1,0 +1,8 @@
+# lib/
+
+Place third-party library wrappers and external client initializations here.
+
+Examples:
+- `lib/api.ts` — base fetch/axios client configuration
+- `lib/analytics.ts` — analytics SDK wrapper
+- `lib/supabase.ts` — Supabase client

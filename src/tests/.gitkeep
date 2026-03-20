@@ -1,0 +1,7 @@
+# tests/
+
+Place integration and end-to-end tests here.
+
+Examples:
+- `tests/auth.integration.test.ts` — full auth flow tests
+- `tests/setup.ts` — shared test setup/teardown

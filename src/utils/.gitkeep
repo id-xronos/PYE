@@ -1,0 +1,8 @@
+# utils/
+
+Place pure, stateless utility and helper functions here.
+
+Examples:
+- `utils/format.ts` — date, currency, string formatters
+- `utils/validators.ts` — input validation helpers
+- `utils/cn.ts` — class name merging utility
